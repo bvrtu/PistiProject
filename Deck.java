@@ -48,9 +48,17 @@ public class Deck {
             for (int i=0;i<cardsPerPlayer;i++) {
                 hand[i] = deck[i];
             }
+            // Shift the elements in the deck array to the left by the number of cards dealt.
+            for (int i=0; i<deck.length-cardsPerPlayer; i++) {
+                deck[i] = deck[i+cardsPerPlayer];
+            }
+            // Set the last few elements of the deck array to null to remove the cards that have been dealt.
+            for (int i=deck.length-cardsPerPlayer; i<deck.length; i++) {
+                deck[i] = null;
+            }
             return hand;
-        }         
-         
+        }    
+
         // To call the deck in another class, this function created.
     public String[] getDeck() {
         return deck;
