@@ -12,16 +12,19 @@ public class Deck {
         }
     }
 
+    // Shuffle function.
     public static void shuffleDeck(String[] deck) {
         for (int i=0;i<deck.length;i++) {
             // Generate a random index.
-            int r = i + (int) (Math.random() * (deck.length-i));
+            int r = i+(int)(Math.random()*(deck.length-i));
             // Swap the elements at indices i and r.
             String temp = deck[r];
             deck[r] = deck[i];
             deck[i] = temp;
         }
     }
+
+    // Cut function.
     public void cutDeck(int cutPoint) {
         // Create a temporary array to store the first half of the deck
         String[] temp = new String[cutPoint];
@@ -37,7 +40,17 @@ public class Deck {
             for (int i=0;i<cutPoint;i++) {
                 deck[deck.length-cutPoint+i] = temp[i];
             }
-        }  
+        }
+
+        // Deal function.
+        public String[] dealCards(int cardsPerPlayer) {
+            String[] hand = new String[cardsPerPlayer];
+            for (int i=0;i<cardsPerPlayer;i++) {
+                hand[i] = deck[i];
+            }
+            return hand;
+        }         
+         
         // To call the deck in another class, this function created.
     public String[] getDeck() {
         return deck;
