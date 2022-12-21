@@ -1,24 +1,24 @@
 public class Deck {
-    private String[] suits = {"♣", "♦", "♥", "♠"};
-    private String[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10","J", "Q", "K"};
-    private String[] deck;
+    private Card[] deck;
 
     public Deck() {
-        deck = new String[52];
-        for (int i=0;i<ranks.length;i++) {
-            for (int j=0;j<suits.length;j++) {
-                deck[suits.length*i + j] = suits[j] + ranks[i];
+        deck = new Card[52];
+        int index = 0;
+        for (int s=0;s<4;s++) {
+            for (int v=1;v<=13;v++) {
+                deck[index] = new Card(s, v);
+                index++;
             }
         }
     }
 
     // Shuffle function.
-    public static void shuffleDeck(String[] deck) {
+    public static void shuffleDeck(Card[] deck) {
         for (int i=0;i<deck.length;i++) {
             // Generate a random index.
             int r = i+(int)(Math.random()*(deck.length-i));
             // Swap the elements at indices i and r.
-            String temp = deck[r];
+            Card temp = deck[r];
             deck[r] = deck[i];
             deck[i] = temp;
         }
@@ -27,7 +27,7 @@ public class Deck {
     // Cut function.
     public void cutDeck(int cutPoint) {
         // Create a temporary array to store the first half of the deck
-        String[] temp = new String[cutPoint];
+        Card[] temp = new Card[cutPoint];
             for (int i=0;i<cutPoint;i++) {
                 temp[i] = deck[i];
             }
@@ -43,8 +43,8 @@ public class Deck {
         }
 
         // Deal function.
-        public String[] dealCards(int cardsPerPlayer) {
-            String[] hand = new String[cardsPerPlayer];
+        public Card[] dealCards(int cardsPerPlayer) {
+            Card[] hand = new Card[cardsPerPlayer];
             for (int i=0;i<cardsPerPlayer;i++) {
                 hand[i] = deck[i];
             }
@@ -60,7 +60,7 @@ public class Deck {
         }    
 
         // To call the deck in another class, this function created.
-    public String[] getDeck() {
+    public Card[] getDeck() {
         return deck;
     }
 }
