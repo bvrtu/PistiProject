@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.Random;
 
 public class Game {
     public static void main(String[] args) {
@@ -37,16 +38,14 @@ public class Game {
             System.out.println();
             System.out.println("--------------------------");
             
-            System.out.print("Your cards: ");
-            for (int i=0;i<4;i++) {
-                System.out.print(player[i] + " ");
-            }
-
-            System.out.println();
-            System.out.println("--------------------------");
-            
-            while (player.length > 0) {
-                // Prompt the user for input
+            while (player.length > 0 && computer.length > 0) {
+                System.out.print("Your cards: ");
+                    for (int i=0;i<player.length;i++) {
+                        System.out.print(player[i] + " ");
+                    }
+                    System.out.println();
+                    System.out.println("--------------------------");
+                // Prompt the user for input and allow them to play a card
                 System.out.print("Enter the index of the card you want to play: ");
                 String input = sc.nextLine();
                 
@@ -66,7 +65,7 @@ public class Game {
                         table = newTable;
                         
                         // Create a new array for the player's hand with one less element
-                        Card[] newPlayer = new Card[player.length - 1];
+                        Card[] newPlayer = new Card[player.length-1];
                         // Copy all elements from the old hand to the new one, except for the selected card
                         System.arraycopy(player, 0, newPlayer, 0, index);
                         System.arraycopy(player, index+1, newPlayer, index, player.length-index-1);
@@ -76,24 +75,57 @@ public class Game {
                         // Print the cards on the table
                         System.out.println("--------------------------");
                         System.out.print("Cards on the table: ");
-                        for (int i=0;i<table.length;i++) {
+                        for (int i = 0; i < table.length; i++) {
                             System.out.print(table[i] + " ");
                         }
                         System.out.println();
-                        System.out.println("--------------------------");
-                        
-                        // Print the player's hand
-                        System.out.print("Your cards: ");
-                        for (int i = 0; i < player.length; i++) {
-                            System.out.print(player[i] + " ");
-                        }
-                        System.out.println();
-                        System.out.println("--------------------------");
-                    }                    
+                    }
                 } catch (NumberFormatException e) {
                     System.out.println("Invalid input. Please enter a valid integer.");
-                }            
+                }
+            
+                // Choose a card for the computer to play
+                Card cardToPlay = null;
+                for (Card card : computer) {
+                    if (card.getValue() == (table[0].getValue()) || card.getSuit() == (table[0].getSuit())) {
+                        cardToPlay = card;
+                        break;
+                    }
+                }
+                if (cardToPlay == null) {
+                    // Choose a random card if no matching cards were found
+                    Random rd = new Random();
+                    int index = rd.nextInt(computer.length);
+                    cardToPlay = computer[index];
+                }
+                    // Remove the chosen card from the computer's hand and add it to the table
+                    Card[] newComputer = new Card[computer.length-1];
+                    int index = -1;
+                    for (int i = 0; i < computer.length; i++) {
+                        if (computer[i] == cardToPlay) {
+                            index = i;
+                            break;
+                        }
+                    }
+                    if (index != -1) {
+                        System.arraycopy(computer, 0, newComputer, 0, index);
+                        System.arraycopy(computer, index+1, newComputer, index, computer.length-index-1);
+                        computer = newComputer;
+                    }
+                    Card[] newTable = new Card[table.length+1];
+                    newTable[0] = cardToPlay;
+                    System.arraycopy(table, 0, newTable, 1, table.length);
+                    table = newTable;
+                
+                    // Print the cards on the table
+                    System.out.println("--------------------------");
+                    System.out.print("Computer played. Cards on the table: ");
+                    for (int i = 0; i < table.length; i++) {
+                        System.out.print(table[i] + " ");
+                    }
+                    System.out.println();
+                    System.out.println("--------------------------");
+                }
             }
         }
     }
-}
