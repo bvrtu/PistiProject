@@ -4,16 +4,16 @@ public class Game {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         Deck deck = new Deck();
-        String[] cards = deck.getDeck();
-        String[] player = new String[4];
-        String[] computer = new String[4];
-        String[] table = new String[52];
+        Card[] cards = deck.getDeck();
+        Card[] player = new Card[4];
+        Card[] computer = new Card[4];
+        Card[] table = new Card[52];
         String user = "";
 
         System.out.println("--------------------------\nWelcome to the Pişti game!\n--------------------------\nIf you are ready, what is your username?");
         user = sc.nextLine();
 
-        System.out.println("--------------------------\nDeck is creating...\nDeck is shuffling...\nPlease select a cutpoint to cut the deck!");
+        System.out.println("--------------------------\nCreating deck...\nShuffling...\nPlease select a cutpoint to cut the deck!");
         deck.shuffleDeck(cards);
         user = sc.nextLine();
         deck.cutDeck(Integer.parseInt(user)); 
@@ -57,7 +57,7 @@ public class Game {
                         System.out.println("Invalid index. Please enter an index between 1 and " + (player.length) + ".");
                     } else {
                         // Create a new array for the table with an extra element
-                        String[] newTable = new String[table.length+1];
+                        Card[] newTable = new Card[table.length+1];
                         // Add the selected card to the beginning of the new table
                         newTable[0] = player[index];
                         // Copy all elements from the old table to the new one, starting at index 1
@@ -66,19 +66,21 @@ public class Game {
                         table = newTable;
                         
                         // Create a new array for the player's hand with one less element
-                        String[] newPlayer = new String[player.length - 1];
+                        Card[] newPlayer = new Card[player.length - 1];
                         // Copy all elements from the old hand to the new one, except for the selected card
                         System.arraycopy(player, 0, newPlayer, 0, index);
-                        System.arraycopy(player, index + 1, newPlayer, index, player.length - index - 1);
+                        System.arraycopy(player, index+1, newPlayer, index, player.length-index-1);
                         // Replace the old hand with the new one
                         player = newPlayer;
                         
                         // Print the cards on the table
+                        System.out.println("--------------------------");
                         System.out.print("Cards on the table: ");
-                        for (int i = 0; i < table.length; i++) {
+                        for (int i=0;i<table.length;i++) {
                             System.out.print(table[i] + " ");
                         }
                         System.out.println();
+                        System.out.println("--------------------------");
                         
                         // Print the player's hand
                         System.out.print("Your cards: ");
@@ -86,6 +88,7 @@ public class Game {
                             System.out.print(player[i] + " ");
                         }
                         System.out.println();
+                        System.out.println("--------------------------");
                     }                    
                 } catch (NumberFormatException e) {
                     System.out.println("Invalid input. Please enter a valid integer.");
