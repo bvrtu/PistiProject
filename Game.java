@@ -11,6 +11,7 @@ public class Game {
         Card[] table = new Card[52];
         String user = "";
         String cutpoint = "";
+        int turn = 0;
 
         System.out.println("--------------------------\nWelcome to the Pişti game!\n--------------------------\nIf you are ready, what is your username?");
         user = sc.nextLine();
@@ -33,21 +34,28 @@ public class Game {
             } catch (NumberFormatException e) {
               System.out.println("Error: Cutpoint must be an integer.");
             }
-          }
+        }
 
         System.out.println("Game is starting...\nCards are dealing...");
+        while (turn < 6) {
+            if (turn > 0) {
+                player = new Card[4];
+                computer = new Card[4];
+            }
         for (int i=0;i<4;i++) {
             player[i] = deck.dealCards(1)[0];
             computer[i] = deck.dealCards(1)[0];
         }
+            if (turn == 0) {
             table = deck.dealCards(4);
+            }
 
             System.out.println("--------------------------");
 
             while (player.length > 0) {
 
             System.out.print("Cards on the table: ");
-            for (int i=0;i<4;i++) {
+            for (int i=0;i<table.length;i++) {
                 System.out.print(table[i] + " ");
             }
             
@@ -91,7 +99,7 @@ public class Game {
                         // Print the cards on the table
                         System.out.println("--------------------------");
                         System.out.print("Cards on the table: ");
-                        for (int i = 0; i < table.length; i++) {
+                        for (int i = 0;i<table.length;i++) {
                             System.out.print(table[i] + " ");
                         }
                         System.out.println();
@@ -143,5 +151,7 @@ public class Game {
                 }
             }
         }
+        turn++;
     }
+}
 }
