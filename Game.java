@@ -10,14 +10,30 @@ public class Game {
         Card[] computer = new Card[4];
         Card[] table = new Card[52];
         String user = "";
+        String cutpoint = "";
 
         System.out.println("--------------------------\nWelcome to the Pişti game!\n--------------------------\nIf you are ready, what is your username?");
         user = sc.nextLine();
 
-        System.out.println("--------------------------\nCreating deck...\nShuffling...\nPlease select a cutpoint to cut the deck!");
+        System.out.println("--------------------------\nCreating deck...\nShuffling...");
         deck.shuffleDeck(cards);
-        user = sc.nextLine();
-        deck.cutDeck(Integer.parseInt(user)); 
+
+        while (true) {
+            System.out.println("Please select a cutpoint to cut the deck!");
+            cutpoint = sc.nextLine();
+          
+            try {
+              int cutpointInt = Integer.parseInt(cutpoint);
+              if (cutpointInt < 1 || cutpointInt > 52) {
+                System.out.println("Error: Cutpoint must be between 1 and 52.");
+              } else {
+                deck.cutDeck(cutpointInt);
+                break;
+              }
+            } catch (NumberFormatException e) {
+              System.out.println("Error: Cutpoint must be an integer.");
+            }
+          }
 
         System.out.println("Game is starting...\nCards are dealing...");
         for (int i=0;i<4;i++) {
@@ -79,53 +95,53 @@ public class Game {
                             System.out.print(table[i] + " ");
                         }
                         System.out.println();
-                    }
+
+                        Card cardToPlay = null;
+                        for (Card card : computer) {
+                            if (card.getValue() == (table[0].getValue()) || card.getSuit() == (table[0].getSuit())) {
+                                cardToPlay = card;
+                                break;
+                            }
+                        }
+                        if (cardToPlay == null) {
+                            // Choose a random card if no matching cards were found
+                            Random rd = new Random();
+                            int index2 = rd.nextInt(computer.length);
+                            cardToPlay = computer[index2];
+                        }
+                            // Remove the chosen card from the computer's hand and add it to the table
+                            Card[] newComputer = new Card[computer.length-1];
+                            int index2 = -1;
+                            for (int i = 0; i < computer.length; i++) {
+                                if (computer[i] == cardToPlay) {
+                                    index2 = i;
+                                    break;
+                                }
+                            }
+                            System.arraycopy(computer, 0, newComputer, 0, index2);
+                            System.arraycopy(computer, index2+1, newComputer, index2, computer.length-index2-1);
+                            computer = newComputer;
+                            
+                            // Add the chosen card to the table
+                            Card[] newTable2 = new Card[table.length+1];
+                            newTable2[0] = cardToPlay;
+                            System.arraycopy(table, 0, newTable2, 1, table.length);
+                            table = newTable2;
+                            
+                            // Print the cards on the table
+                            System.out.println("--------------------------");
+                            System.out.print("Computer played. Cards on the table: ");
+                            for (int i=0;i<table.length;i++) {
+                                System.out.print(table[i] + " ");
+                            }
+                            System.out.println();
+                            System.out.println("--------------------------");
+                        }
+                    
                 } catch (NumberFormatException e) {
                     System.out.println("Invalid input. Please enter a valid integer.");
-                }
-            
-                // Choose a card for the computer to play
-                Card cardToPlay = null;
-                for (Card card : computer) {
-                    if (card.getValue() == (table[0].getValue()) || card.getSuit() == (table[0].getSuit())) {
-                        cardToPlay = card;
-                        break;
-                    }
-                }
-                if (cardToPlay == null) {
-                    // Choose a random card if no matching cards were found
-                    Random rd = new Random();
-                    int index = rd.nextInt(computer.length);
-                    cardToPlay = computer[index];
-                }
-                    // Remove the chosen card from the computer's hand and add it to the table
-                    Card[] newComputer = new Card[computer.length-1];
-                    int index = -1;
-                    for (int i = 0; i < computer.length; i++) {
-                        if (computer[i] == cardToPlay) {
-                            index = i;
-                            break;
-                        }
-                    }
-                    if (index != -1) {
-                        System.arraycopy(computer, 0, newComputer, 0, index);
-                        System.arraycopy(computer, index+1, newComputer, index, computer.length-index-1);
-                        computer = newComputer;
-                    }
-                    Card[] newTable = new Card[table.length+1];
-                    newTable[0] = cardToPlay;
-                    System.arraycopy(table, 0, newTable, 1, table.length);
-                    table = newTable;
-                
-                    // Print the cards on the table
-                    System.out.println("--------------------------");
-                    System.out.print("Computer played. Cards on the table: ");
-                    for (int i = 0; i < table.length; i++) {
-                        System.out.print(table[i] + " ");
-                    }
-                    System.out.println();
-                    System.out.println("--------------------------");
                 }
             }
         }
     }
+}
