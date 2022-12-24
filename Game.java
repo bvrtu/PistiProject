@@ -248,6 +248,41 @@ public class Game {
                                 // Clear the table
                                     table = new Card[52];
                         }
+                        int computerNonNullElements = 0;
+                        for (Card card : computer2) {
+                            if (card != null) {
+                                computerNonNullElements++;
+                            }
+                        }
+                        for (int i=0;i<computer2.length;i++) {
+                            if (computer2[i] != null && (computer2[i].getValue() == 10 && computer2[i].getSuit() == 0)) {
+                                computerPoints += 3;
+                            }
+                            if (computer2[i] != null && (computer2[i].getValue() == 2 && computer2[i].getSuit() == 1)) {
+                                computerPoints += 2;
+                            }
+                        }
+                        int playerNonNullElements = 0;
+                        for (Card card : player2) {
+                            if (card != null) {
+                                playerNonNullElements++;
+                            }
+                        }
+                        for (int i=0;i<player2.length;i++) {
+                            if (player2[i] != null && (player2[i].getValue() == 10 && player2[i].getSuit() == 0)) {
+                                playerPoints += 3;
+                            }
+                            if (player2[i] != null && (player2[i].getValue() == 2 && player2[i].getSuit() == 1)) {
+                                playerPoints += 2;
+                            }
+                        }
+                        if (computerNonNullElements > playerNonNullElements) {
+                            computerPoints += 3;
+                        } else if (playerNonNullElements > computerNonNullElements) {
+                            playerPoints += 3;
+                        }
+                        playerPoints += playerNonNullElements;
+                        computerPoints += computerNonNullElements;
                     }
                 }
                 } catch (NumberFormatException e) {
@@ -257,5 +292,7 @@ public class Game {
         }
         turn++;
     }
+    System.out.println("COMPUTER'S SCORE: " + (computerPoints-1));
+    System.out.println("YOUR SCORE: " + (playerPoints-1));
 }
 }
