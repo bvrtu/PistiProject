@@ -83,7 +83,7 @@ public class Game {
                     if (index < 0 || index >= player.length) {
                         System.out.println("Invalid index. Please enter an index between 1 and " + (player.length) + ".");
                     } else {    
-                        if (player[index].getValue() == table[0].getValue() || player[index].getValue() == 11) {
+                        if (table[0] != null && (player[index].getValue() == table[0].getValue() || player[index].getValue() == 11)) {
                             // Create a new array for player2's hand with one extra element
                             Card[] newPlayer2 = new Card[player2.length + table.length + 1];
                             // Add the thrown card to the beginning of player2's new hand
@@ -103,10 +103,7 @@ public class Game {
                             // Replace the old hand with the new one
                             player = newPlayer;
                             // Clear the table
-                            table = new Card[52];
-                            for (int i=0;i<player2.length;i++) {
-                                System.out.print(player2[i]);
-                            }                     
+                            table = new Card[52];                   
                         } else {
                         // Create a new array for the table with an extra element
                         Card[] newTable = new Card[table.length+1];
@@ -136,40 +133,58 @@ public class Game {
                         }
                         System.out.println();
 
+                        // Check if the top card on the table has the same rank as any of the cards in the computer's hand
                         Card cardToPlay = null;
                         for (Card card : computer) {
                             if (table[0] != null) {
-                            if (card.getValue() == (table[0].getValue())) {
-                                cardToPlay = card;
-                                break;
+                                if (card.getValue() == table[0].getValue() || card.getValue() == 11) {
+                                    cardToPlay = card;
+                                    break;
+                                }
                             }
                         }
-                    }
+
                         if (cardToPlay == null) {
-                            // Choose a random card if no matching cards were found
+                        // Choose a random card if no matching cards were found
                             Random rd = new Random();
                             int index2 = rd.nextInt(computer.length);
                             cardToPlay = computer[index2];
                         }
-                            // Remove the chosen card from the computer's hand and add it to the table
-                            Card[] newComputer = new Card[computer.length-1];
-                            int index2 = -1;
-                            for (int i = 0; i < computer.length; i++) {
-                                if (computer[i] == cardToPlay) {
-                                    index2 = i;
-                                    break;
-                                }
+
+                        // Remove the chosen card from the computer's hand
+                        Card[] newComputer = new Card[computer.length-1];
+                        int index2 = -1;
+                        for (int i = 0; i < computer.length; i++) {
+                            if (computer[i] == cardToPlay) {
+                                index2 = i;
+                                break;
                             }
-                            System.arraycopy(computer, 0, newComputer, 0, index2);
-                            System.arraycopy(computer, index2+1, newComputer, index2, computer.length-index2-1);
-                            computer = newComputer;
-                            
-                            // Add the chosen card to the table
+                        }
+                        
+                        System.arraycopy(computer, 0, newComputer, 0, index2);
+                        System.arraycopy(computer, index2+1, newComputer, index2, computer.length-index2-1);
+                        computer = newComputer;
+
+                        if (table[0] != null && (cardToPlay.getValue() == table[0].getValue() || cardToPlay.getValue() == 11)) {
+                        // If the computer played a card with the same rank as the top card on the table, or a Jack, clear the table and add the cards to computer2's hand
+                            Card[] newComputer2 = new Card[computer2.length + table.length + 1];
+                        // Add the chosen card to the beginning of computer2's new hand
+                            newComputer2[0] = cardToPlay;
+                        // Add all elements from the table to computer2's new hand, starting at index 1
+                            System.arraycopy(table, 0, newComputer2, 1, table.length);
+                        // Add all elements from computer2's old hand to the new one, starting at the end of the table
+                            System.arraycopy(computer2, 0, newComputer2, table.length + 1, computer2.length);
+                        // Replace computer2's old hand with the new one
+                            computer2 = newComputer2;
+                        // Clear the table
+                            table = new Card[52];
+                        } else {
+                        // Add the chosen card to the table
                             Card[] newTable2 = new Card[table.length+1];
                             newTable2[0] = cardToPlay;
                             System.arraycopy(table, 0, newTable2, 1, table.length);
                             table = newTable2;
-                            
+                        }
                             // Print the cards on the table
                             System.out.println("--------------------------");
                             System.out.print("Computer played. Cards on the table: ");
