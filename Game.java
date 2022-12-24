@@ -13,6 +13,7 @@ public class Game {
         Card[] computer2 = new Card[52];
         String user = "";
         String cutpoint = "";
+        String lastTake = "";
         int turn = 0;
 
         System.out.println("--------------------------\nWelcome to the Pişti game!\n--------------------------\nIf you are ready, what is your username?");
@@ -103,7 +104,9 @@ public class Game {
                             // Replace the old hand with the new one
                             player = newPlayer;
                             // Clear the table
-                            table = new Card[52];                   
+                            table = new Card[52];
+                            
+                            lastTake = "player";
                         } else {
                         // Create a new array for the table with an extra element
                         Card[] newTable = new Card[table.length+1];
@@ -178,6 +181,7 @@ public class Game {
                             computer2 = newComputer2;
                         // Clear the table
                             table = new Card[52];
+                            lastTake = "computer";
                         } else {
                         // Add the chosen card to the table
                             Card[] newTable2 = new Card[table.length+1];
@@ -195,8 +199,36 @@ public class Game {
                             }
                             System.out.println();
                             System.out.println("--------------------------");
+                            if (turn == 5 && (player.length == 0 && computer.length == 0)) {
+                                // Check if there are any cards left on the table
+                                if (table[0] != null) {
+                                // Transfer the remaining cards on the table to player2 if the last player to collect the cards was the computer
+                                    if (lastTake.equals("computer")) {
+                                // Create a new array for player2's hand with the same number of elements as the number of cards on the table
+                                        Card[] newPlayer2 = new Card[player2.length + table.length];
+                                // Add all elements from the table to player2's new hand, starting at the end of the old hand
+                                        System.arraycopy(table, 0, newPlayer2, player2.length, table.length);
+                                // Add all elements from player2's old hand to the new one
+                                        System.arraycopy(player2, 0, newPlayer2, 0, player2.length);
+                                // Replace player2's old hand with the new one
+                                        player2 = newPlayer2;
+                                    }
+                                // Transfer the remaining cards on the table to computer2 if the last player to collect the cards was the player
+                            else if (lastTake.equals("player")) {
+                                // Create a new array for computer2's hand with the same number of elements as the number of cards on the table
+                                    Card[] newComputer2 = new Card[computer2.length + table.length];
+                                // Add all elements from the table to computer2's new hand, starting at the end of the old hand
+                                    System.arraycopy(table, 0, newComputer2, computer2.length, table.length);
+                                // Add all elements from computer2's old hand to the new one
+                                    System.arraycopy(computer2, 0, newComputer2, 0, computer2.length);
+                                // Replace computer2's old hand with the new one
+                                    computer2 = newComputer2;
+                            }
+                                // Clear the table
+                                    table = new Card[52];
                         }
-                    
+                    }
+                }
                 } catch (NumberFormatException e) {
                     System.out.println("Invalid input. Please enter a valid integer.");
                 }
