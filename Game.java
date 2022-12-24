@@ -15,6 +15,8 @@ public class Game {
         String cutpoint = "";
         String lastTake = "";
         int turn = 0;
+        int computerPoints = 0;
+        int playerPoints = 0;
 
         System.out.println("--------------------------\nWelcome to the Pişti game!\n--------------------------\nIf you are ready, what is your username?");
         user = sc.nextLine();
@@ -68,6 +70,12 @@ public class Game {
             System.out.println("--------------------------");
             
             while (player.length > 0 && computer.length > 0) {
+                int nonNullElements = 0;
+                for (Card card : table) {
+                    if (card != null) {
+                        nonNullElements++;
+                    }
+                }
                 System.out.print("Your cards: ");
                     for (int i=0;i<player.length;i++) {
                         System.out.print(player[i] + " ");
@@ -89,6 +97,9 @@ public class Game {
                             Card[] newPlayer2 = new Card[player2.length + table.length + 1];
                             // Add the thrown card to the beginning of player2's new hand
                             newPlayer2[0] = player[index];
+                            if (nonNullElements == 1 && player[index].getValue() == table[0].getValue()) {
+                                playerPoints += 10;
+                            }                            
                             // Add all elements from the table to player2's new hand, starting at index 1
                             System.arraycopy(table, 0, newPlayer2, 1, table.length);
                             // Add all elements from player2's old hand to the new one, starting at the end of the table
@@ -103,6 +114,7 @@ public class Game {
                             System.arraycopy(player, index + 1, newPlayer, index, player.length - index - 1);
                             // Replace the old hand with the new one
                             player = newPlayer;
+
                             // Clear the table
                             table = new Card[52];
                             
@@ -140,7 +152,7 @@ public class Game {
                         Card cardToPlay = null;
                         for (Card card : computer) {
                             if (table[0] != null) {
-                                if (card.getValue() == table[0].getValue() || card.getValue() == 11) {
+                                if (card.getValue() == table[0].getValue() || (card.getValue() == 11 && table.length > 3)) {
                                     cardToPlay = card;
                                     break;
                                 }
@@ -167,19 +179,28 @@ public class Game {
                         System.arraycopy(computer, 0, newComputer, 0, index2);
                         System.arraycopy(computer, index2+1, newComputer, index2, computer.length-index2-1);
                         computer = newComputer;
-
+                        
                         if (table[0] != null && (cardToPlay.getValue() == table[0].getValue() || cardToPlay.getValue() == 11)) {
-                        // If the computer played a card with the same rank as the top card on the table, or a Jack, clear the table and add the cards to computer2's hand
+                            nonNullElements = 0;
+                            for (Card card : table) {
+                                if (card != null) {
+                                    nonNullElements++;
+                                }
+                            }
+                            if (nonNullElements == 1 && cardToPlay.getValue() == table[0].getValue()) {
+                                computerPoints += 10;
+                            }                            
+                            // If the computer played a card with the same rank as the top card on the table, or a Jack, clear the table and add the cards to computer2's hand
                             Card[] newComputer2 = new Card[computer2.length + table.length + 1];
-                        // Add the chosen card to the beginning of computer2's new hand
+                            // Add the chosen card to the beginning of computer2's new hand
                             newComputer2[0] = cardToPlay;
-                        // Add all elements from the table to computer2's new hand, starting at index 1
+                            // Add all elements from the table to computer2's new hand, starting at index 1
                             System.arraycopy(table, 0, newComputer2, 1, table.length);
-                        // Add all elements from computer2's old hand to the new one, starting at the end of the table
+                            // Add all elements from computer2's old hand to the new one, starting at the end of the table
                             System.arraycopy(computer2, 0, newComputer2, table.length + 1, computer2.length);
-                        // Replace computer2's old hand with the new one
+                            // Replace computer2's old hand with the new one
                             computer2 = newComputer2;
-                        // Clear the table
+                            // Clear the table
                             table = new Card[52];
                             lastTake = "computer";
                         } else {
