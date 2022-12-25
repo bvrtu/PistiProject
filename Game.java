@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.io.IOException;
 import java.util.Random;
 
 public class Game {   
@@ -59,8 +60,15 @@ public class Game {
 
             while (player.length > 0) {
 
+                System.out.print("Card on top of the table: ");
+                if (table[0] != null) {
+                    System.out.print(table[0]);
+                }
+                System.out.println();
+                System.out.println();
+
             System.out.print("Cards on the table: ");
-            for (int i=0;i<table.length;i++) {
+            for (int i=1;i<table.length;i++) {
                 if (table[i] != null) {
                 System.out.print(table[i] + " ");
                 }
@@ -140,8 +148,14 @@ public class Game {
                         
                         // Print the cards on the table
                         System.out.println("--------------------------");
+                        System.out.print("Card on top of the table: ");
+                        if (table[0] != null) {
+                        System.out.print(table[0]);
+                        }
+                        System.out.println();
+                        System.out.println();
                         System.out.print("Cards on the table: ");
-                        for (int i = 0;i<table.length;i++) {
+                        for (int i = 1;i<table.length;i++) {
                             if (table[i] != null) {
                             System.out.print(table[i] + " ");
                             }
@@ -212,8 +226,14 @@ public class Game {
                         }
                             // Print the cards on the table
                             System.out.println("--------------------------");
-                            System.out.print("Computer played. Cards on the table: ");
-                            for (int i=0;i<table.length;i++) {
+                            System.out.print("Computer played. Card on top of the table: ");
+                            if (table[0] != null) {
+                                System.out.print(table[0]);
+                            }
+                            System.out.println();
+                            System.out.println();
+                            System.out.print("Cards on the table: ");
+                            for (int i=1;i<table.length;i++) {
                                 if (table[i] != null) {
                                 System.out.print(table[i] + " ");
                                 }
@@ -256,10 +276,10 @@ public class Game {
                         }
                         for (int i=0;i<computer2.length;i++) {
                             if (computer2[i] != null && (computer2[i].getValue() == 10 && computer2[i].getSuit() == 0)) {
-                                computerPoints += 3;
+                                computerPoints += 2;
                             }
                             if (computer2[i] != null && (computer2[i].getValue() == 2 && computer2[i].getSuit() == 1)) {
-                                computerPoints += 2;
+                                computerPoints += 1;
                             }
                         }
                         int playerNonNullElements = 0;
@@ -270,10 +290,10 @@ public class Game {
                         }
                         for (int i=0;i<player2.length;i++) {
                             if (player2[i] != null && (player2[i].getValue() == 10 && player2[i].getSuit() == 0)) {
-                                playerPoints += 3;
+                                playerPoints += 2;
                             }
                             if (player2[i] != null && (player2[i].getValue() == 2 && player2[i].getSuit() == 1)) {
-                                playerPoints += 2;
+                                playerPoints += 1;
                             }
                         }
                         if (computerNonNullElements > playerNonNullElements) {
@@ -292,7 +312,10 @@ public class Game {
         }
         turn++;
     }
-    System.out.println("COMPUTER'S SCORE: " + (computerPoints-1));
-    System.out.println("YOUR SCORE: " + (playerPoints-1));
+    System.out.println("COMPUTER'S SCORE: " + (computerPoints));
+    System.out.println("YOUR SCORE: " + (playerPoints));
+
+    HighScore highScore = new HighScore();
+    highScore.updateHighScores(user, playerPoints);
 }
 }
