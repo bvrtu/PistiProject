@@ -9,26 +9,26 @@ public class HighScore {
     public class HighScoreEntry {
         private String name;
         private int score;
-
+    
         public HighScoreEntry(String name, int score) {
             this.name = name;
             this.score = score;
         }
-
+    
         public String getName() {
             return name;
         }
-
+    
         public int getScore() {
             return score;
         }
     }
-
+    
     public void writeHighScores(HighScoreEntry[] highScores) {
         Formatter f = null;
         FileWriter fw = null;
         try {
-            fw = new FileWriter("highscores.txt",true);
+            fw = new FileWriter("highscores.txt");
             f = new Formatter(fw);
             for (int i = 0; i < highScores.length; i++) {
                 f.format("%s:%d%n", highScores[i].getName(), highScores[i].getScore());
@@ -51,7 +51,7 @@ public class HighScore {
         }
         
         Scanner reader = null;
-
+    
         try {
             reader = new Scanner(Paths.get("highscores.txt"));
             int i = 0;
@@ -73,17 +73,23 @@ public class HighScore {
     
         return highScores;
     }
-
+    
     public void updateHighScores(String name, int score) {
-        System.out.println("Updating high scores with name " + name + " and score " + score);
-        // Write the player's score and name to the high scores file
-        writeHighScores(new HighScoreEntry[] {new HighScoreEntry(name, score)});
-        
-        // Read the high scores from the file
+
+        // Create a new HighScoreEntry object with the player's name and score
+        HighScoreEntry newEntry = new HighScoreEntry(name, score);
+
+       // Read the current high scores from the file
         HighScoreEntry[] highScores = readHighScores();
-        
-        // Sort the high scores
+
+        // Add the new entry to the high scores array
+        highScores[highScores.length - 1] = newEntry;
+
+        // Sort the high scores in descending order
         sortHighScores(highScores);
+
+        // Write the sorted high scores to the file
+        writeHighScores(highScores);
     }    
 
     private void sortHighScores(HighScoreEntry[] highScores) {
@@ -96,5 +102,5 @@ public class HighScore {
                 }
             }
         }
-    }
+    }    
 }
