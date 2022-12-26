@@ -12,7 +12,7 @@ public class Deck {
         }
     }
 
-    // Shuffle function.
+    // Shuffle method.
     public static void shuffleDeck(Card[] deck) {
         for (int i=0;i<deck.length;i++) {
             // Generate a random index.
@@ -24,42 +24,42 @@ public class Deck {
         }
     }
 
-    // Cut function.
+    // Cut method.
     public void cutDeck(int cutPoint) {
-        // Create a temporary array to store the first half of the deck
-        Card[] temp = new Card[cutPoint];
+        // Create a temporary array to store the first half of the deck.
+            Card[] temp = new Card[cutPoint];
             for (int i=0;i<cutPoint;i++) {
                 temp[i] = deck[i];
             }
-        // Shift the second half of the deck to the front of the deck
+        // Shift the second half of the deck to the front of the deck.
             for (int i=0;i<deck.length-cutPoint;i++) {
                 deck[i] = deck[cutPoint+i];
             }
     
-        // Add the first half of the deck to the end of the deck
+        // Add the first half of the deck to the end of the deck.
             for (int i=0;i<cutPoint;i++) {
                 deck[deck.length-cutPoint+i] = temp[i];
             }
         }
-
-        // Deal function.
+    
+        // Deal method.
         public Card[] dealCards(int cardsPerPlayer) {
             Card[] hand = new Card[cardsPerPlayer];
             for (int i=0;i<cardsPerPlayer;i++) {
                 hand[i] = deck[i];
             }
             // Shift the elements in the deck array to the left by the number of cards dealt.
-            for (int i=0; i<deck.length-cardsPerPlayer; i++) {
-                deck[i] = deck[i+cardsPerPlayer];
+            for (int i=cardsPerPlayer;i<deck.length;i++) {
+                deck[i-cardsPerPlayer] = deck[i];
             }
             // Set the last few elements of the deck array to null to remove the cards that have been dealt.
-            for (int i=deck.length-cardsPerPlayer; i<deck.length; i++) {
+            for (int i=deck.length-cardsPerPlayer;i<deck.length;i++) {
                 deck[i] = null;
             }
             return hand;
-        }    
+        }            
 
-        // To call the deck in another class, this function created.
+    // To call the deck in another class, this function created.
     public Card[] getDeck() {
         return deck;
     }

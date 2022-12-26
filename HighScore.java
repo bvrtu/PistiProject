@@ -10,9 +10,9 @@ public class HighScore {
         private String name;
         private int score;
     
-        public HighScoreEntry(String name, int score) {
-            this.name = name;
-            this.score = score;
+        public HighScoreEntry(String n, int s) {
+            name = n;
+            score = s;
         }
     
         public String getName() {
