@@ -333,18 +333,19 @@ public class Game {
     System.out.println("COMPUTER'S SCORE: " + (computerPoints));
     System.out.println("YOUR SCORE: " + (playerPoints));
 
-    HighScore highScore = new HighScore();
+    HighScore highScore = new HighScore(user,playerPoints);
     highScore.updateHighScores(user, playerPoints);
 
     System.out.println();
-    System.out.println("player");
+    System.out.println("Player's cards: ");
     for (int i=0;i<player2.length;i++) {
         if (player2[i] != null) {
             System.out.print(player2[i] + " ");
         }
     }
     System.out.println();
-    System.out.println("computer");
+    System.out.println();
+    System.out.println("Computer's cards: ");
     for (int i=0;i<computer2.length;i++) {
         if (computer2[i] != null) {
             System.out.print(computer2[i] + " ");
