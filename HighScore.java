@@ -6,25 +6,23 @@ import java.nio.file.Paths;
 
 public class HighScore {
 
-    public class HighScoreEntry {
-        private String name;
-        private int score;
-    
-        public HighScoreEntry(String n, int s) {
-            name = n;
-            score = s;
-        }
-    
-        public String getName() {
-            return name;
-        }
-    
-        public int getScore() {
-            return score;
-        }
+    private String name;
+    private int score;
+
+    public HighScore(String n, int s) {
+        name = n;
+        score = s;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getScore() {
+        return score;
     }
     
-    public void writeHighScores(HighScoreEntry[] highScores) {
+    public void writeHighScores(HighScore[] highScores) {
         Formatter f = null;
         FileWriter fw = null;
         try {
@@ -42,12 +40,12 @@ public class HighScore {
         }
     }
     
-    public HighScoreEntry[] readHighScores() {
-        HighScoreEntry[] highScores = new HighScoreEntry[10];
+    public HighScore[] readHighScores() {
+        HighScore[] highScores = new HighScore[10];
     
         // Initialize the high scores array with default values
         for (int i = 0; i < highScores.length; i++) {
-            highScores[i] = new HighScoreEntry("", 0);
+            highScores[i] = new HighScore("", 0);
         }
         
         Scanner reader = null;
@@ -60,11 +58,11 @@ public class HighScore {
                 String[] parts = line.split(":");
                 String name = parts[0];
                 int score = Integer.parseInt(parts[1]);
-                highScores[i] = new HighScoreEntry(name, score);
+                highScores[i] = new HighScore(name, score);
                 i++;
             }
         } catch (IOException e) {
-            System.out.println("An error occurred while reading the high scores file.");
+            System.out.println("An error occurred while reading the high scores file. There is no score in high score list.");
         } finally {
             if (reader != null) {
                 reader.close();
@@ -76,11 +74,11 @@ public class HighScore {
     
     public void updateHighScores(String name, int score) {
 
-        // Create a new HighScoreEntry object with the player's name and score
-        HighScoreEntry newEntry = new HighScoreEntry(name, score);
+        // Create a new HighScore object with the player's name and score
+        HighScore newEntry = new HighScore(name, score);
 
        // Read the current high scores from the file
-        HighScoreEntry[] highScores = readHighScores();
+        HighScore[] highScores = readHighScores();
 
         // Add the new entry to the high scores array
         highScores[highScores.length - 1] = newEntry;
@@ -92,11 +90,11 @@ public class HighScore {
         writeHighScores(highScores);
     }    
 
-    private void sortHighScores(HighScoreEntry[] highScores) {
+    private void sortHighScores(HighScore[] highScores) {
         for (int i = 0; i < highScores.length - 1; i++) {
             for (int j = i + 1; j < highScores.length; j++) {
                 if (highScores[i].getScore() < highScores[j].getScore()) {
-                    HighScoreEntry temp = highScores[i];
+                    HighScore temp = highScores[i];
                     highScores[i] = highScores[j];
                     highScores[j] = temp;
                 }
