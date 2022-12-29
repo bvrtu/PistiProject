@@ -1,8 +1,8 @@
 public class Card {
-    public static int diamonds = 0;
-    public static int clubs = 1;
-    public static int spades = 2;
-    public static int hearts = 3;
+    public int diamonds = 0;
+    public int clubs = 1;
+    public int spades = 2;
+    public int hearts = 3;
     
     private int value;
     private int suit;
